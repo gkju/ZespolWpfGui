@@ -1,0 +1,19 @@
+﻿<Application x:Class="ZespolWpfGui.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:ZespolWpfGui"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             StartupUri="MainWindow.xaml"
+             Startup="App_Startup" 
+             Exit="App_Exit">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <hc:ThemeResources RequestedTheme="Dark"/>
+                <hc:Theme/>
+            </ResourceDictionary.MergedDictionaries>
+            <FontFamily x:Key="Raleway">/Fonts/#Raleway</FontFamily>
+            <FontFamily x:Key="RalewayItalic">/Fonts/#RalewayItalic</FontFamily>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
