@@ -47,7 +47,7 @@
                         <RowDefinition Height="60" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <TextBlock FontSize="40" FontWeight="Bold" Foreground="White">Twoje pliki</TextBlock>
+                    <TextBlock  FontFamily="{StaticResource Raleway}" FontSize="40" FontWeight="Bold" Foreground="White">Twoje pliki</TextBlock>
                     <ListView SelectedItem="{Binding SelectedFile}" MouseDoubleClick="OpenFileDoubleClick" x:Name="ZespolFilesList" Margin="0, 20, 0, 0" Grid.Row="1">
                         <ListView.View>
                             <GridView>
@@ -62,7 +62,7 @@
                 </Grid>
 
                 <Grid Column="3">
-                    <TextBlock FontSize="40" FontWeight="Bold" Foreground="White">Twoje serwery</TextBlock>
+                    <TextBlock FontFamily="{StaticResource Raleway}" FontSize="40" FontWeight="Bold" Foreground="White">Twoje serwery</TextBlock>
                 </Grid>
             </Grid>
         </Grid>
