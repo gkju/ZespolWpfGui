@@ -48,7 +48,7 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <TextBlock  FontFamily="{StaticResource Raleway}" FontSize="40" FontWeight="Bold" Foreground="White">Twoje pliki</TextBlock>
-                    <ListView SelectedItem="{Binding SelectedFile}" MouseDoubleClick="OpenFileDoubleClick" x:Name="ZespolFilesList" Margin="0, 20, 0, 0" Grid.Row="1">
+                    <ListView SelectedItem="{Binding SelectedFile}" MouseDoubleClick="FileListDoubleClick" x:Name="ZespolFilesList" Margin="0, 20, 0, 0" Grid.Row="1">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="Nazwa" DisplayMemberBinding="{Binding Name}"/>
@@ -62,8 +62,31 @@
                 </Grid>
 
                 <Grid Column="3">
+                    <Grid.RowDefinitions>
+                    <RowDefinition Height="60" />
+                    <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
                     <TextBlock FontFamily="{StaticResource Raleway}" FontSize="40" FontWeight="Bold" Foreground="White">Twoje serwery</TextBlock>
+                    <ListView MouseDoubleClick="RemoteZespolList_OnMouseDoubleClickDoubleClick" x:Name="RemoteZespolList" Margin="0, 20, 0, 0" Grid.Row="1">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Nazwa" DisplayMemberBinding="{Binding Name}"/>
+                                <GridViewColumn Header="Serwer" DisplayMemberBinding="{Binding RemoteName}"/>
+                                
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
                 </Grid>
+            </Grid>
+
+            <Grid Grid.Row="2" Margin="10">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button Click="DeleteSelectedFileFromList"  Content="Usuń zaznaczony plik" Margin="10, 0, 10, 0" />
+                    <Button Click="OpenSelectedFile"  Content="Otwórz zaznaczony plik" Margin="10, 0, 10, 0" />
+                    <Button Click="AddFile"  Content="Dodaj pliki" Margin="10, 0, 10, 0" />
+                    <Button Click="AddServerRemote" Content="Dodaj serwer" Margin="10, 0, 10, 0" />
+                </StackPanel>
             </Grid>
         </Grid>
     </Grid>

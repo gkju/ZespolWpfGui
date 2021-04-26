@@ -1,0 +1,46 @@
+﻿<Window x:Class="ZespolWpfGui.Dialogs.AddServerDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ZespolWpfGui.Dialogs"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
+        mc:Ignorable="d"
+        Title="Dodaj serwer" Height="250" Width="400"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        ResizeMode="NoResize"
+        ShowInTaskbar="False">
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="50" />
+    </WindowChrome.WindowChrome>
+    <Grid>
+        <Border CornerRadius="50" Background="{DynamicResource RegionBrush}" />
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+
+            </Grid.ColumnDefinitions>
+
+
+            <Grid VerticalAlignment="Top" WindowChrome.IsHitTestVisibleInChrome="True" Margin="5">
+                <Button HorizontalAlignment="Right" Margin="0, 5, 25, 0" fa:Awesome.Content="Close" FontSize="20" Height="40" IsCancel="True" Click="CancelButton"/>
+            </Grid>
+            <Grid Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Grid Margin="20, 0, 20, 0">
+                    <StackPanel>
+                        <TextBlock Foreground="White" FontSize="30" FontWeight="Bold" HorizontalAlignment="Center" FontFamily="{DynamicResource Raleway}">Dodaj serwer</TextBlock>
+                        <TextBox Name="NameTextBox" MaxWidth="200" hc:InfoElement.Placeholder="Nazwa" Style="{StaticResource TextBoxExtend}" hc:InfoElement.TitlePlacement="Left" Margin="20, 10, 20, 0" />
+                        <TextBox Name="DescTextBox"  MaxWidth="200" hc:InfoElement.Placeholder="Opis" Style="{StaticResource TextBoxExtend}" hc:InfoElement.TitlePlacement="Left" Margin="20, 10, 20, 0" />
+                        <TextBox Name="UrlTextBox"  MaxWidth="200" hc:InfoElement.Placeholder="URL" Style="{StaticResource TextBoxExtend}" hc:InfoElement.TitlePlacement="Left" Margin="20, 10, 20, 0" />
+                        <Button Margin="0, 10, 0, 0" FontFamily="{DynamicResource Raleway}" Click="Submit" IsDefault="True">Dodaj</Button>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>
