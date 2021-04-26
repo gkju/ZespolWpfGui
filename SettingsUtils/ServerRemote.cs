@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ZespolWpfGui.Settings
+namespace ZespolWpfGui.SettingsUtils
 {
-    public class ZespolFile
+    public class ServerRemote
     {
-        public string FilePath { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+        public string Url { get; set; }
     }
 }
