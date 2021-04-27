@@ -32,11 +32,15 @@ namespace ZespolWpfGui.Dialogs
         {
             DataContext = this;
             InitializeComponent();
+            RebuildRemotesAvailable();
+        }
+
+        void RebuildRemotesAvailable()
+        {
             RemotesAvailable =
                 new ObservableCollection<ServerRemote>(((App) Application.Current).Settings.RememberedRemotes);
             ServerRemoteList.ItemsSource = RemotesAvailable;
         }
-
         private void Submit(object sender, RoutedEventArgs e)
         {
             if (Index == -1)
@@ -53,6 +57,23 @@ namespace ZespolWpfGui.Dialogs
         private void CloseButton(object sender, RoutedEventArgs e)
         {
             DialogResult = false;
+        }
+
+        private void AddRemote()
+        {
+            AddServerDialog dialog = new AddServerDialog();
+            dialog.ShowDialog();
+
+            if (dialog.DialogResult == true)
+            {
+                ((App)Application.Current).Settings.RememberedRemotes.Add(new ServerRemote {Description = dialog.Desc, Name = dialog.Name, Url = dialog.Url});
+                RebuildRemotesAvailable();
+            }
+        }
+
+        private void AddRemoteButton(object sender, RoutedEventArgs e)
+        {
+            AddRemote();
         }
     }
 }

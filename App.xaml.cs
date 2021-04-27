@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Windows.ApplicationModel.Appointments;
 using ZespolWpfGui.SettingsUtils;
 
 namespace ZespolWpfGui

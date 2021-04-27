@@ -15,7 +15,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using ABI.Windows.Networking.BackgroundTransfer;
 using Flurl;
 using Flurl.Http;
 using Microsoft.Win32;
@@ -208,11 +207,19 @@ namespace ZespolWpfGui.ZespolManagement
 
         private void EditCzlonek()
         {
-            EdytujCzlonka dialog = new EdytujCzlonka((CzlonekZespolu)ObservableCzlonkowie[ChosenCzlonekIndex].Clone());
-
-            if (dialog.ShowDialog() == true)
+            if (ChosenCzlonekIndex != -1)
             {
-                ObservableCzlonkowie[ChosenCzlonekIndex] = dialog.Czlonek;
+                EdytujCzlonka dialog = new EdytujCzlonka((CzlonekZespolu)ObservableCzlonkowie[ChosenCzlonekIndex].Clone());
+
+                if (dialog.ShowDialog() == true)
+                {
+                    ObservableCzlonkowie[ChosenCzlonekIndex] = dialog.Czlonek;
+                }
+            }
+            else
+            {
+                MessageBox.Show("Wybierz jakiegoś członka", "Wymagana uwaga", MessageBoxButton.OK,
+                    MessageBoxImage.Error);
             }
         }
 
@@ -233,16 +240,23 @@ namespace ZespolWpfGui.ZespolManagement
 
         private void DeleteCzlonek(object sender, RoutedEventArgs e)
         {
-            CzlonekZespolu chosenCzlonek = ObservableCzlonkowie[ChosenCzlonekIndex];
-            var dr =
-                MessageBox.Show($"Czy jesteś pewien, że chcesz usunąć {chosenCzlonek.Imie} {chosenCzlonek.Nazwisko}?",
-                    "Usuwanie członka", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            if (ChosenCzlonekIndex != -1)
+            {
+                CzlonekZespolu chosenCzlonek = ObservableCzlonkowie[ChosenCzlonekIndex];
+                var dr =
+                    MessageBox.Show($"Czy jesteś pewien, że chcesz usunąć {chosenCzlonek.Imie} {chosenCzlonek.Nazwisko}?",
+                        "Usuwanie członka", MessageBoxButton.YesNo, MessageBoxImage.Warning);
 
-            if (dr == MessageBoxResult.Yes)
-            { 
-                ObservableCzlonkowie.RemoveAt(ChosenCzlonekIndex);
+                if (dr == MessageBoxResult.Yes)
+                { 
+                    ObservableCzlonkowie.RemoveAt(ChosenCzlonekIndex);
+                } 
             }
-            
+            else
+            {
+                MessageBox.Show("Wybierz jakiegoś członka", "Wymagana uwaga", MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+            }
         }
 
         private void AddCzlonek(object sender, RoutedEventArgs e)
