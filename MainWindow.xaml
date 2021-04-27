@@ -8,7 +8,7 @@
         xmlns:hc="https://handyorg.github.io/handycontrol" x:Class="ZespolWpfGui.MainWindow"
         xmlns:fa="http://schemas.fontawesome.io/icons/"
         mc:Ignorable="d"
-        Title="Start" Height="400" Width="800"
+        Title="Start" Height="400" Width="900"
         WindowStyle="None"
         AllowsTransparency="True"
         Background="Transparent"
@@ -43,7 +43,7 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="5*"/>
                     <ColumnDefinition Width="30*"/>
-                    <ColumnDefinition Width="10*"/>
+                    <ColumnDefinition Width="20*"/>
                     <ColumnDefinition Width="30*"/>
                     <ColumnDefinition Width="5*"/>
                 </Grid.ColumnDefinitions>
@@ -58,13 +58,30 @@
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="Nazwa" DisplayMemberBinding="{Binding Name}"/>
-                                <GridViewColumn Header="Opis" DisplayMemberBinding="{Binding Description}"/>
+                                <GridViewColumn Header="Typ" DisplayMemberBinding="{Binding Type}"/>
                                 <GridViewColumn CellTemplate="{StaticResource OpenFileButtonTemplate}"/>
 
                             </GridView>
                         </ListView.View>
                     </ListView>
                     
+                </Grid>
+
+                <Grid Column="2">
+                    <StackPanel Margin="0, 80 , 0, 0" HorizontalAlignment="Stretch">
+                        <Button HorizontalAlignment="Stretch" Height="50" Margin="5" Click="DeleteSelectedFileFromList">
+                            <TextBlock TextWrapping="Wrap" HorizontalAlignment="Stretch" TextAlignment="Center">
+                                Usuń zaznaczony <LineBreak/>  plik z listy
+                            </TextBlock>
+                        </Button>
+                        <Button HorizontalAlignment="Stretch" Margin="5" Click="OpenSelectedFile"  Content="Otwórz zaznaczony plik" />
+                        <Button HorizontalAlignment="Stretch" Margin="5" Click="OpenBlankEditor"  Content="Stwórz pusty zespół" />
+                        <Button Click="OpenRemoteZespol" Height="50" HorizontalAlignment="Stretch" Margin="5">
+                            <TextBlock TextWrapping="Wrap" HorizontalAlignment="Stretch" TextAlignment="Center">
+                                Otwórz zaznaczony <LineBreak/>zdalny zespół
+                            </TextBlock>
+                        </Button>
+                    </StackPanel>
                 </Grid>
 
                 <Grid Column="3">
@@ -88,11 +105,8 @@
 
             <Grid Grid.Row="2" Margin="10">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <Button Click="DeleteSelectedFileFromList"  Content="Usuń zaznaczony plik" Margin="10, 0, 10, 0" />
-                    <Button Click="OpenSelectedFile"  Content="Otwórz zaznaczony plik" Margin="10, 0, 10, 0" />
                     <Button Click="AddFile"  Content="Dodaj pliki" Margin="10, 0, 10, 0" />
                     <Button Click="AddServerRemote" Content="Dodaj serwer" Margin="10, 0, 10, 0" />
-                    <Button Click="OpenRemoteZespol"  Content="Otwórz zaznaczony zdalny zespół" Margin="10, 0, 10, 0" />
                 </StackPanel>
             </Grid>
         </Grid>

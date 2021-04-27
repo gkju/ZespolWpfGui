@@ -104,9 +104,10 @@
             </Grid>
             <Grid Grid.Row="2" Margin="10">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <Button Click="SaveButton"  Content="Zapisz" Margin="10, 0, 10, 0" />
+                    <Button Click="SaveButton"  Content="Zapisz sam plik" Margin="10, 0, 10, 0" />
                     <Button Click="SaveWithNewPath"  Content="Zapisz z nową ścieżką" Margin="10, 0, 10, 0" />
-                    <Button Click="SaveToRemoteButton"  Content="Zapisz na serwer" Margin="10, 0, 10, 0" />
+                    <Button Click="SaveAll"  Content="Zapisz" Margin="10, 0, 10, 0" />
+                    <Button Click="SaveToRemoteButton"  Content="Zapisz na sam serwer" Margin="10, 0, 10, 0" />
                     <Button Click="ChangeServer"  Content="Wybierz serwer" Margin="10, 0, 10, 0" />
                 </StackPanel>
             </Grid>

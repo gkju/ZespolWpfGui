@@ -32,7 +32,7 @@ namespace ZespolWpfGui.ZespolManagement
         public Zespol Zespol { get; }
         // Czy coś zostało zmienione wykrywam na podstawie różnić między końcowym json stringiem zespołu a początkowym, co nie jest optymalne, ale ze względu na np overload is equal osoby najłatwiej tak to zrobić
         // TODO: robienie głębokiego porównania ogzespol i zespol
-        private string OgZespolString { get; }
+        private string OgZespolString { get; set; }
         private ObservableCollection<CzlonekZespolu> ObservableCzlonkowie { get; set; }
         private string SavePath { get; set; }
         private string SaveUrl { get; set; }
@@ -72,19 +72,20 @@ namespace ZespolWpfGui.ZespolManagement
             SaveFile();
         }
 
-        private void SaveFile()
+        // zwraca true jeśli zapisał plik
+        private bool SaveFile()
         {
             if (SavePath != "")
             {
-                SaveFileWithRememberedPath();
+                return SaveFileWithRememberedPath();
             }
             else
             {
-                SaveFileWithDialog();
+                return SaveFileWithDialog();
             }
         }
 
-        private void SaveFileWithDialog()
+        private bool SaveFileWithDialog()
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.RestoreDirectory = true;
@@ -94,34 +95,46 @@ namespace ZespolWpfGui.ZespolManagement
             {
                 string filePath = System.IO.Path.GetFullPath(saveFileDialog.FileName);
                 SavePath = filePath;
-                SaveFile(filePath);
+                return SaveFile(filePath);
             }
+
+            return false;
         }
 
-        private void SaveFileWithRememberedPath()
+        private bool SaveFileWithRememberedPath()
         {
-            SaveFile(SavePath);
+            return SaveFile(SavePath);
         }
 
-        private void SaveFile(string filepath)
+        private bool SaveFile(string filepath)
         {
             string ext = System.IO.Path.GetExtension(filepath);
 
-            switch (ext)
+            try
             {
-                case ".json":
-                    Zespol.ZapiszJSON(filepath);
-                    break;
-                case ".xml":
-                    Zespol.ZapiszXML(filepath);
-                    break;
-                case ".yml":
-                case ".yaml":
-                    Zespol.ZapiszYaml(filepath);
-                    break;
-                case ".bin":
-                    Zespol.ZapiszBin(filepath);
-                    break;
+                switch (ext)
+                {
+                    case ".json":
+                        Zespol.ZapiszJSON(filepath);
+                        break;
+                    case ".xml":
+                        Zespol.ZapiszXML(filepath);
+                        break;
+                    case ".yml":
+                    case ".yaml":
+                        Zespol.ZapiszYaml(filepath);
+                        break;
+                    case ".bin":
+                        Zespol.ZapiszBin(filepath);
+                        break;
+                }
+
+                OgZespolString = Zespol.GetJSONString();
+                return true;
+            }
+            catch
+            {
+                return false;
             }
         }
 
@@ -135,14 +148,37 @@ namespace ZespolWpfGui.ZespolManagement
             }
         }
 
-        private async void SaveToRemote()
+        // zwraca false jeśli nic nie zapisał
+        private async Task<bool> SaveToRemote()
         {
             if (SaveUrl == "")
             {
                 PromptToChooseRemote();
+
+                while (SaveUrl == "")
+                {
+                    var dr = MessageBox.Show(
+                        "Nie wybrałeś żadnego serwera. Czy chcesz spróbować ponownie?",
+                        "Wymagana uwaga", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
+                    if (dr == MessageBoxResult.Yes)
+                    {
+                        PromptToChooseRemote();
+                    }
+                    else if(dr == MessageBoxResult.No)
+                    {
+                        return false;
+                    }
+                }
             }
 
-            await SaveUrl.AppendPathSegment("Zespol").PostJsonAsync(Zespol);
+            var resp = await SaveUrl.AppendPathSegment("Zespol").PostJsonAsync(Zespol);
+            if (resp.StatusCode == 200)
+            {
+                OgZespolString = Zespol.GetJSONString();
+                return true;
+            }
+
+            return false;
         }
 
         private void SaveToRemoteButton(object sender, RoutedEventArgs e)
@@ -215,6 +251,7 @@ namespace ZespolWpfGui.ZespolManagement
 
         private void OnClosing(object sender, CancelEventArgs e)
         {
+            bool res;
             bool zmiana = OgZespolString != Zespol.GetJSONString();
             if (zmiana)
             {
@@ -226,14 +263,17 @@ namespace ZespolWpfGui.ZespolManagement
                     switch (dialog.result)
                     {
                         case PromptSaveResult.File:
-                            SaveFile();
+                            res = SaveFile();
+                            HandleRes(res, e);
                             break;
                         case PromptSaveResult.Server:
-                            SaveToRemote();
+                            res = SaveToRemote().Result;
+                            HandleRes(res, e);
                             break;
                         case PromptSaveResult.FileAndServer:
-                            SaveFile();
-                            SaveToRemote();
+                            res = SaveFile();
+                            bool res2 = SaveToRemote().Result;
+                            HandleRes(res && res2, e);
                             break;
                     }
                 }
@@ -242,6 +282,22 @@ namespace ZespolWpfGui.ZespolManagement
                     e.Cancel = true;
                 }
             }
+        }
+
+        private void HandleRes(bool res, CancelEventArgs e)
+        {
+            if (!res)
+            {
+                MessageBox.Show("Nie udało zapisać się pliku", "Wymagana uwaga", MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+                e.Cancel = true;
+            }
+        }
+
+        private void SaveAll(object sender, RoutedEventArgs e)
+        {
+            SaveFile();
+            SaveToRemote();
         }
     }
 }

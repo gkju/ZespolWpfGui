@@ -31,9 +31,13 @@ namespace ZespolWpfGui.Dialogs
 
         private void Submit(object sender, RoutedEventArgs e)
         {
-            if (Czlonek != null)
+            if (Czlonek != null && Czlonek.Imie != "" && Czlonek.Nazwisko != "" && Czlonek.Funkcja != "" && Czlonek.PESEL != "" && Czlonek.DataUrodzenia != default(DateTime))
             {
                 DialogResult = true;
+            }
+            else
+            {
+                MessageBox.Show("Wypełnij wszystkie pola");
             }
         }
 

@@ -160,7 +160,7 @@ namespace ZespolWpfGui
                     ZespolFile newFile = new ZespolFile
                     {
                         Name = System.IO.Path.GetFileName(filename),
-                        Description = "Plik " + System.IO.Path.GetExtension(filename),
+                        Type = "Plik " + System.IO.Path.GetExtension(filename),
                         FilePath = System.IO.Path.GetFullPath(filename)
                     };
 
@@ -212,9 +212,17 @@ namespace ZespolWpfGui
 
         private void DeleteSelectedFileFromList(object sender, RoutedEventArgs e)
         {
-            ((App)Application.Current).Settings.RememberedFiles = ((App)Application.Current).Settings.RememberedFiles.Where(file => System.IO.Path.GetFullPath(file.FilePath) != System.IO.Path.GetFullPath(SelectedFile.FilePath)).ToList();
-            SelectedFile = null;
-            BuildZespolFiles();
+            if (SelectedFile != null)
+            {
+                ((App)Application.Current).Settings.RememberedFiles = ((App)Application.Current).Settings.RememberedFiles.Where(file => System.IO.Path.GetFullPath(file.FilePath) != System.IO.Path.GetFullPath(SelectedFile.FilePath)).ToList();
+                SelectedFile = null;
+                BuildZespolFiles();
+            }
+            else
+            {
+                MessageBox.Show("Musisz zaznaczyć jakiś plik");
+            }
+            
         }
 
         private void OpenRemoteZespol(object sender, RoutedEventArgs e)
@@ -243,6 +251,13 @@ namespace ZespolWpfGui
             {
                 OpenZespolWindow(Remote.zespol, "", Remote.RemoteUrl);
             }
+        }
+
+        private void OpenBlankEditor(object sender, RoutedEventArgs e)
+        {
+            Zespol zespol = new Zespol();
+            zespol.Kierownik = new KierownikZespolu();
+            OpenZespolWindow(zespol);
         }
     }
 }
