@@ -5,7 +5,8 @@
              xmlns:hc="https://handyorg.github.io/handycontrol"
              StartupUri="MainWindow.xaml"
              Startup="App_Startup" 
-             Exit="App_Exit">
+             Exit="App_Exit"
+             ShutdownMode="OnLastWindowClose">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

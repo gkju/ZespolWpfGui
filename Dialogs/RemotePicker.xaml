@@ -37,7 +37,10 @@
                                 </GridView>
                             </ListView.View>
                         </ListView>
-                        <Button Margin="0, 10, 0, 0" FontFamily="{DynamicResource Raleway}" Click="Submit" IsDefault="True">Wybierz</Button>
+                        <StackPanel>
+                            <Button Margin="0, 10, 0, 0" FontFamily="{DynamicResource Raleway}" Click="Submit" IsDefault="True">Wybierz</Button>
+                            <Button Margin="0, 10, 0, 0" FontFamily="{DynamicResource Raleway}" Click="AddRemoteButton">Dodaj serwer</Button>
+                        </StackPanel>
                     </StackPanel>
                 </Grid>
             </Grid>

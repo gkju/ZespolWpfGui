@@ -7,7 +7,7 @@ using ZespolLib;
 
 namespace ZespolWpfGui.SettingsUtils
 {
-    public class RemoteZespol
+    public class RemoteZespol : MemberWiseCloneable<RemoteZespol>
     {
         public Zespol zespol { get; set; }
         public string Id { get; set; }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -32,6 +33,7 @@ namespace ZespolWpfGui
     /// </summary>
     public partial class MainWindow : Window
     {
+        private int WindowCount { get; set; } = 0;
         public ObservableCollection<ZespolFile> ZespolFiles { get; set; }
         public ObservableCollection<ServerRemote> ServerRemotes { get; set; }
 
@@ -74,12 +76,17 @@ namespace ZespolWpfGui
                     new ZespolManagement.ZespolManagement(Zespol, SavePath, SaveUrl);
                 window.Show();
 
-                window.Closed += (sender2, e2) => window.Dispatcher.InvokeShutdown();
+                window.Closed += (sender2, e2) =>
+                {
+                    window.Dispatcher.InvokeShutdown();
+                    window.Dispatcher.Invoke(() => --WindowCount);
+                };
 
                 System.Windows.Threading.Dispatcher.Run();
             });
 
             thread.SetApartmentState(ApartmentState.STA);
+            ++WindowCount;
             thread.Start();
         }
 
@@ -121,7 +128,7 @@ namespace ZespolWpfGui
             }
         }
 
-        private void OpenSelectedFile(object sender, RoutedEventArgs e)
+        private void OpenSelectedFile(object sender = null, RoutedEventArgs e = null)
         {
             if (SelectedFile != null)
             {
@@ -225,7 +232,7 @@ namespace ZespolWpfGui
             
         }
 
-        private void OpenRemoteZespol(object sender, RoutedEventArgs e)
+        private void OpenRemoteZespol(object sender = null, RoutedEventArgs e = null)
         {
             if (SelectedRemoteZespol != null)
             {
@@ -234,12 +241,12 @@ namespace ZespolWpfGui
         }
         private void RemoteZespolList_OnMouseDoubleClickDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            // TODO: edit remote dialog
+            OpenRemoteZespol();
         }
 
         private void FileListDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            // TODO: edit local file dialog
+            OpenSelectedFile();
         }
 
         private void OpenRemoteButton(object sender, RoutedEventArgs e)
@@ -258,6 +265,42 @@ namespace ZespolWpfGui
             Zespol zespol = new Zespol();
             zespol.Kierownik = new KierownikZespolu();
             OpenZespolWindow(zespol);
+        }
+
+        private void OpenServerManagement(object sender, RoutedEventArgs e)
+        {
+            Thread thread = new Thread(() =>
+            {
+                ServerExplorer window = new ServerExplorer();
+                window.Show();
+
+                window.Closed += (sender2, e2) =>
+                {
+                    window.Dispatcher.InvokeShutdown();
+                    window.Dispatcher.Invoke(() => --WindowCount);
+                };
+
+                System.Windows.Threading.Dispatcher.Run();
+            });
+
+            thread.SetApartmentState(ApartmentState.STA);
+            ++WindowCount;
+            thread.Start();
+        }
+
+        private void RefreshRemotesButton(object sender, RoutedEventArgs e)
+        {
+            RefreshRemoteZespols();
+        }
+
+        private void HandleClosing(object sender, CancelEventArgs e)
+        {
+            if (WindowCount > 0)
+            {
+                e.Cancel = true;
+                MessageBox.Show("Zamknij wszystkie okna przed zamknięciem głównego", "Ważne", MessageBoxButton.OK,
+                    MessageBoxImage.Exclamation);
+            }
         }
     }
 }
