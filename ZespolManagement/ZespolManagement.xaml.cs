@@ -270,22 +270,22 @@ namespace ZespolWpfGui.ZespolManagement
 
                 if (dialog.ShowDialog() == true)
                 {
-                    // ponieważ robimy tu async rzeczy po prostu zamkniemy okno jeszcze raz jak skończymy
-                    e.Cancel = true;
                     switch (dialog.result)
                     {
                         case PromptSaveResult.File:
                             res = SaveFile();
-                            HandleRes(res);
+                            HandleRes(res, e);
                             break;
                         case PromptSaveResult.Server:
                             res = await SaveToRemote();
-                            HandleRes(res);
+                            HandleRes(res, e);
                             break;
                         case PromptSaveResult.FileAndServer:
                             res = SaveFile();
                             bool res2 = await SaveToRemote();
-                            HandleRes(res, res2);
+                            HandleRes(res, e, res2);
+                            break;
+                        case PromptSaveResult.No:
                             break;
                     }
                 }
@@ -316,16 +316,18 @@ namespace ZespolWpfGui.ZespolManagement
             }
         }
 
-        private void HandleRes(bool res, bool? res2 = null)
+        private void HandleRes(bool res, CancelEventArgs e, bool? res2 = null)
         {
             if (!res)
             {
-                MessageBox.Show(string.Format("Nie udało zapisać się pliku {0}", res2 == true ?  ", ale udało się na serwer" : ""), "Wymagana uwaga", MessageBoxButton.OK,
+                MessageBox.Show(string.Format("Nie udało zapisać się pliku{0}", res2 == true ?  ", ale udało się na serwer" : ""), "Wymagana uwaga", MessageBoxButton.OK,
                     MessageBoxImage.Error);
-            }
-            else
+                e.Cancel = true;
+            } else if (res2 == false)
             {
-                Close();
+                MessageBox.Show(string.Format("Nie udało zapisać się na serwer{0}", res == true ?  ", ale udało się plik" : ""), "Wymagana uwaga", MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+                e.Cancel = true;
             }
         }
 
