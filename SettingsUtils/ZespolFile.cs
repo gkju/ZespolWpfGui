@@ -11,6 +11,11 @@ namespace ZespolWpfGui.SettingsUtils
     {
         public string FilePath { get; set; }
         public string Name { get; set; }
-        public string Description { get; set; }
+        public string Type { get; set; }
+
+        public ZespolFile Clone()
+        {
+            return (ZespolFile) MemberwiseClone();
+        }
     }
 }
