@@ -1,0 +1,68 @@
+﻿<Window WindowStartupLocation="CenterScreen"
+        x:Class="ZespolWpfGui.Dialogs.EdytujCzlonka"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ZespolWpfGui.Dialogs"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
+        mc:Ignorable="d"
+        Title="Edytuj członka" 
+        Height="500" Width="800"
+        WindowStyle="None"
+        Background="Transparent"
+        AllowsTransparency="True"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}">
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="50" />
+    </WindowChrome.WindowChrome>
+    <Grid>
+        <Border CornerRadius="50" Background="{DynamicResource RegionBrush}" />
+        <Grid VerticalAlignment="Top" WindowChrome.IsHitTestVisibleInChrome="True" Margin="5">
+            <Button HorizontalAlignment="Right" Margin="0, 5, 25, 0" fa:Awesome.Content="Close" FontSize="20" Height="40" IsCancel="True" Click="CloseButton"/>
+        </Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="30" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="30" />
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                <Grid Margin="20, 0, 20, 0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel>
+                        <TextBlock Foreground="White" FontSize="30" FontWeight="Bold" HorizontalAlignment="Center" FontFamily="{DynamicResource Raleway}" Text="{Binding Czlonek.Imie}"/>
+                        <TextBox Text="{Binding Czlonek.Imie}" hc:InfoElement.Title="Imię" hc:InfoElement.Placeholder="Imię" Margin="5" Style="{StaticResource TextBoxExtend}" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.TitleWidth="60" HorizontalAlignment="Stretch" />
+                        <TextBox Text="{Binding Czlonek.Nazwisko}" hc:InfoElement.Title="Nazwisko" hc:InfoElement.Placeholder="Nazwisko" Margin="5" Style="{StaticResource TextBoxExtend}" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.TitleWidth="60" HorizontalAlignment="Stretch" />
+                        <TextBox Text="{Binding Czlonek.PESEL}" hc:InfoElement.Title="PESEL" hc:InfoElement.Placeholder="PESEL" Margin="5" Style="{StaticResource TextBoxExtend}" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.TitleWidth="60" HorizontalAlignment="Stretch" />
+                        <TextBox Text="{Binding Czlonek.Funkcja}" hc:InfoElement.Title="Funkcja" hc:InfoElement.Placeholder="Funkcja" Margin="5" Style="{StaticResource TextBoxExtend}" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.TitleWidth="60" HorizontalAlignment="Stretch" />
+
+
+                        <ComboBox Foreground="White" Name="SexChooser" hc:InfoElement.Title="Wybierz płeć"  hc:InfoElement.TitlePlacement="Left" hc:InfoElement.TitleWidth="90" HorizontalAlignment="Stretch" Margin="5" SelectionChanged="SexChooser_OnSelectionChanged" Style="{StaticResource ComboBoxExtend}" Text="Płeć">
+                            <ComboBoxItem Content="Kobieta"/>
+                            <ComboBoxItem Content="Mężczyzna"/>
+                        </ComboBox>
+                        
+                        <Button Margin="0, 10, 0, 0" FontFamily="{DynamicResource Raleway}" Click="Submit" IsDefault="True">Zatwierdź</Button>
+                    </StackPanel>
+                    <Grid Grid.Column="1" Margin="30, 0, 30, 0">
+                        <StackPanel>
+                            <TextBlock Foreground="White" HorizontalAlignment="Center" FontFamily="{StaticResource Raleway}" FontSize="30" Margin="10">Data urodzenia:</TextBlock>
+                            <Calendar SelectedDate="{Binding Czlonek.DataUrodzenia}" />
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

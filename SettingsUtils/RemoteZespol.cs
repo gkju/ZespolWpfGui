@@ -13,5 +13,6 @@ namespace ZespolWpfGui.SettingsUtils
         public string Id { get; set; }
         public string Name { get; set; }
         public string RemoteName { get; set; }
+        public string RemoteUrl { get; set; }
     }
 }

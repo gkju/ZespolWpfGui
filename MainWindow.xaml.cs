@@ -38,11 +38,11 @@ namespace ZespolWpfGui
         public ObservableCollection<RemoteZespol> RemoteZespols { get; set; } =
             new ObservableCollection<RemoteZespol>();
         public ZespolFile SelectedFile { get; set; }
+        public RemoteZespol SelectedRemoteZespol { get; set; }
 
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = this;
             BuildZespolFiles();
             BuildServerRemotes();
             RefreshRemoteZespols();
@@ -153,7 +153,7 @@ namespace ZespolWpfGui
             Nullable<bool> result = openFileDialog.ShowDialog();
             if (result == true)
             {
-                string[] filenames = openFileDialog.SafeFileNames;
+                string[] filenames = openFileDialog.FileNames;
 
                 foreach (var filename in filenames)
                 {
@@ -197,7 +197,8 @@ namespace ZespolWpfGui
                         RemoteZespols.Add(new RemoteZespol
                         {
                             Id = zespolCluster.Zespol.Id, Name = zespolCluster.Nazwa, zespol = zespolCluster.Zespol,
-                            RemoteName = remote.Name
+                            RemoteName = remote.Name,
+                            RemoteUrl = remote.Url
                         });
                     }
                 }
@@ -209,6 +210,20 @@ namespace ZespolWpfGui
             }
         }
 
+        private void DeleteSelectedFileFromList(object sender, RoutedEventArgs e)
+        {
+            ((App)Application.Current).Settings.RememberedFiles = ((App)Application.Current).Settings.RememberedFiles.Where(file => System.IO.Path.GetFullPath(file.FilePath) != System.IO.Path.GetFullPath(SelectedFile.FilePath)).ToList();
+            SelectedFile = null;
+            BuildZespolFiles();
+        }
+
+        private void OpenRemoteZespol(object sender, RoutedEventArgs e)
+        {
+            if (SelectedRemoteZespol != null)
+            {
+                OpenZespolWindow(SelectedRemoteZespol.zespol, "", SelectedRemoteZespol.RemoteUrl);
+            }
+        }
         private void RemoteZespolList_OnMouseDoubleClickDoubleClick(object sender, MouseButtonEventArgs e)
         {
             // TODO: edit remote dialog
@@ -219,11 +234,15 @@ namespace ZespolWpfGui
             // TODO: edit local file dialog
         }
 
-        private void DeleteSelectedFileFromList(object sender, RoutedEventArgs e)
+        private void OpenRemoteButton(object sender, RoutedEventArgs e)
         {
-            ((App)Application.Current).Settings.RememberedFiles = ((App)Application.Current).Settings.RememberedFiles.Where(file => System.IO.Path.GetFullPath(file.FilePath) != System.IO.Path.GetFullPath(SelectedFile.FilePath)).ToList();
-            SelectedFile = null;
-            BuildZespolFiles();
+            string Id = ((Button) sender).Tag.ToString();
+            var Remote = RemoteZespols.FirstOrDefault(zespol => zespol.Id == Id);
+
+            if (Remote != default(RemoteZespol))
+            {
+                OpenZespolWindow(Remote.zespol, "", Remote.RemoteUrl);
+            }
         }
     }
 }

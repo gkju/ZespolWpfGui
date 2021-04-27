@@ -24,7 +24,7 @@ namespace ZespolWpfGui.Dialogs
     /// </summary>
     public partial class RemotePicker : Window
     {
-        private int Index { get; set; }
+        public int Index { get; set; } = -1;
         public ServerRemote ChosenRemote { get; set; }
         private ObservableCollection<ServerRemote> RemotesAvailable { get; set; }
 
@@ -43,9 +43,11 @@ namespace ZespolWpfGui.Dialogs
             {
                 MessageBox.Show("Wybierz jakiś serwer");
             }
-
-            ChosenRemote = RemotesAvailable[Index];
-            DialogResult = true;
+            else
+            {
+                ChosenRemote = RemotesAvailable[Index];
+                DialogResult = true;
+            }
         }
 
         private void CloseButton(object sender, RoutedEventArgs e)

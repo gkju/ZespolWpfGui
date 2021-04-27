@@ -1,0 +1,52 @@
+﻿<Window WindowStartupLocation="CenterScreen"
+        x:Class="ZespolWpfGui.Dialogs.PromptSave"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ZespolWpfGui.Dialogs"
+        mc:Ignorable="d"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
+        Title="Czy chcesz zapisać zmiany?" Height="250" Width="350"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        ResizeMode="NoResize"
+        ShowInTaskbar="False">
+    <WindowChrome.WindowChrome>
+            <WindowChrome CaptionHeight="50" />
+        </WindowChrome.WindowChrome>
+        <Grid>
+            <Border CornerRadius="5" Background="{DynamicResource RegionBrush}" />
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+
+                </Grid.ColumnDefinitions>
+
+
+                <Grid VerticalAlignment="Top" WindowChrome.IsHitTestVisibleInChrome="True" Margin="5">
+                    <Button HorizontalAlignment="Right" Margin="0, 5, 5, 0" fa:Awesome.Content="Close" FontSize="10" Height="30" IsCancel="True" Click="CloseButton"/>
+                </Grid>
+                <Grid Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <Grid Margin="10, 0, 10, 0">
+                        <StackPanel>
+                        <TextBlock HorizontalAlignment="Center" Margin="0, 50, 0, 0" VerticalAlignment="Top" Foreground="White" FontSize="20" FontWeight="Bold" FontFamily="{DynamicResource Raleway}">Czy chcesz zapisać zmiany?</TextBlock>
+                            
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0, 20, 0, 0">
+                            <Button Click="YesFile" FontFamily="{DynamicResource Raleway}" Margin="5">Tak (plik)</Button>
+                            <Button Click="YesServer" FontFamily="{DynamicResource Raleway}" Margin="5">Tak (serwer)</Button>
+                        </StackPanel>
+                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                            <Button Click="YesFileAndServer" FontFamily="{DynamicResource Raleway}" Margin="5">Tak (plik i serwer)</Button>
+                            <Button Click="No" FontFamily="{DynamicResource Raleway}" Margin="5">Nie</Button>
+                        </StackPanel>
+                    </StackPanel>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Window>
